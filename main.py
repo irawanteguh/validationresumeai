@@ -466,8 +466,400 @@ def print_problem_table(rows):
 
 
 # ====================================
-# MAIN
+# PER DOCTOR PERFORMANCE ANALYSIS
 # ====================================
+def print_doctor_performance(data):
+
+    from collections import defaultdict
+
+    from evaluator import (
+        evaluate_pair_detail,
+        calculate_metrics
+    )
+
+    # ====================================
+    # CONFIG
+    # ====================================
+    MIN_DOC = 5
+
+    # ====================================
+    # AGGREGATE
+    # ====================================
+    doctor_stats = defaultdict(lambda: {
+
+        "TP": 0,
+        "FP": 0,
+        "FN": 0,
+
+        "TOTAL_DOC": 0,
+
+        "FIELDS": defaultdict(lambda: {
+            "TP": 0,
+            "FP": 0,
+            "FN": 0
+        })
+    })
+
+    # ====================================
+    # LOOP DATA
+    # ====================================
+    for row in data:
+
+        doctor = (
+            row.get("namadokter")
+            or "UNKNOWN"
+        )
+
+        doctor = doctor.strip().upper()
+
+        doctor_stats[doctor]["TOTAL_DOC"] += 1
+
+        # ====================================
+        # FIELD LOOP
+        # ====================================
+        for field in FIELDS:
+
+            dokter_val = row.get(
+                f"dokter_{field}"
+            )
+
+            ai_val = row.get(
+                f"ai_{field}"
+            )
+
+            matched, fp, fn = evaluate_pair_detail(
+                dokter_val,
+                ai_val
+            )
+
+            TP = len(matched)
+            FP = len(fp)
+            FN = len(fn)
+
+            # overall
+            doctor_stats[doctor]["TP"] += TP
+            doctor_stats[doctor]["FP"] += FP
+            doctor_stats[doctor]["FN"] += FN
+
+            # per field
+            doctor_stats[doctor]["FIELDS"][field]["TP"] += TP
+            doctor_stats[doctor]["FIELDS"][field]["FP"] += FP
+            doctor_stats[doctor]["FIELDS"][field]["FN"] += FN
+
+    # ====================================
+    # BUILD RESULT
+    # ====================================
+    rows = []
+
+    for doctor, stat in doctor_stats.items():
+
+        total_doc = stat["TOTAL_DOC"]
+
+        if total_doc < MIN_DOC:
+            continue
+
+        TP = stat["TP"]
+        FP = stat["FP"]
+        FN = stat["FN"]
+
+        precision, recall, f1 = calculate_metrics(
+            TP,
+            FP,
+            FN
+        )
+
+        # ====================================
+        # WORST FIELD
+        # ====================================
+        worst_field = "-"
+        worst_f1 = 999
+
+        for field, fs in stat["FIELDS"].items():
+
+            fp_, rc_, f1_ = calculate_metrics(
+                fs["TP"],
+                fs["FP"],
+                fs["FN"]
+            )
+
+            f1_percent = f1_ * 100
+
+            if f1_percent < worst_f1:
+
+                worst_f1 = f1_percent
+                worst_field = field.upper()
+
+        rows.append({
+
+            "doctor": doctor,
+
+            "total_doc": total_doc,
+
+            "precision": precision * 100,
+            "recall": recall * 100,
+            "f1": f1 * 100,
+
+            "TP": TP,
+            "FP": FP,
+            "FN": FN,
+
+            "worst_field": worst_field,
+            "worst_f1": worst_f1
+        })
+
+    # ====================================
+    # SORT
+    # ====================================
+    rows = sorted(
+        rows,
+        key=lambda x: x["f1"]
+    )
+
+    # ====================================
+    # PRINT
+    # ====================================
+    print("\n" + "=" * 150)
+
+    log(
+        "PER DOCTOR PERFORMANCE ANALYSIS",
+        CYAN
+    )
+
+    print("=" * 150)
+
+    print(
+        f"{'RANK':5} | "
+        f"{'DOCTOR':30} | "
+        f"{'DOC':6} | "
+        f"{'PRECISION':10} | "
+        f"{'RECALL':10} | "
+        f"{'F1 SCORE':10} | "
+        f"{'FP':7} | "
+        f"{'FN':7} | "
+        f"{'WORST FIELD':15}"
+    )
+
+    print("-" * 150)
+
+    for idx, r in enumerate(rows, start=1):
+
+        # ====================================
+        # COLOR BASED ON F1
+        # ====================================
+        if r["f1"] >= 95:
+            color = GREEN
+
+        elif r["f1"] >= 90:
+            color = CYAN
+
+        elif r["f1"] >= 85:
+            color = YELLOW
+
+        else:
+            color = RED
+
+        print(
+            f"{color}"
+            f"{idx:<5} | "
+            f"{r['doctor'][:30]:30} | "
+            f"{r['total_doc']:6} | "
+            f"{r['precision']:9.2f}% | "
+            f"{r['recall']:9.2f}% | "
+            f"{r['f1']:9.2f}% | "
+            f"{r['FP']:7} | "
+            f"{r['FN']:7} | "
+            f"{r['worst_field']:15}"
+            f"{RESET}"
+        )
+
+    # ====================================
+    # WORST DOCTOR
+    # ====================================
+    if rows:
+
+        worst = rows[0]
+
+        print("\n" + "=" * 150)
+
+        log(
+            "WORST DOCTOR INSIGHT",
+            RED
+        )
+
+        print("=" * 150)
+
+        print(f"{RED}DOCTOR        : {worst['doctor']}{RESET}")
+
+        print(f"TOTAL DOC     : {worst['total_doc']}")
+        print(f"PRECISION     : {worst['precision']:.2f}%")
+        print(f"RECALL        : {worst['recall']:.2f}%")
+        print(f"F1 SCORE      : {worst['f1']:.2f}%")
+
+        print(f"FP            : {worst['FP']}")
+        print(f"FN            : {worst['FN']}")
+
+        print(
+            f"WORST FIELD   : "
+            f"{worst['worst_field']} "
+            f"({worst['worst_f1']:.2f}%)"
+        )
+
+        print()
+
+        print("POSSIBLE CAUSE:")
+
+        if worst["recall"] < 85:
+            print("- Banyak FN / extraction miss")
+
+        if worst["precision"] < 85:
+            print("- Banyak FP / hallucination")
+
+        if worst["worst_field"] == "INSTRUKSI":
+            print("- Instruksi kemungkinan terlalu variatif")
+
+        if worst["worst_field"] == "GEJALA":
+            print("- Gejala kemungkinan ambigu / singkatan tinggi")
+
+        print()
+
+        print("RECOMMENDATION:")
+        print("- Tambahkan preprocessing singkatan medis")
+        print("- Tambahkan typo normalization")
+        print("- Tambahkan training sample doctor ini")
+
+# ====================================
+# KONTROL MISSING PHRASE ANALYSIS
+# ====================================
+def print_kontrol_missing_phrase(data):
+
+    from collections import defaultdict, Counter
+
+    from evaluator import (
+        evaluate_pair_detail,
+        safe_text
+    )
+
+    # ====================================
+    # STORAGE
+    # ====================================
+    missing_counter = defaultdict(Counter)
+
+    missing_episode = defaultdict(
+        lambda: defaultdict(set)
+    )
+
+    # ====================================
+    # LOOP DATA
+    # ====================================
+    for row in data:
+
+        doctor = (
+            row.get("namadokter")
+            or "UNKNOWN"
+        )
+
+        doctor = doctor.strip().upper()
+
+        episode_id = row.get("episode_id")
+
+        dokter_text = safe_text(
+            row.get("dokter_kontrol")
+        )
+
+        ai_text = safe_text(
+            row.get("ai_kontrol")
+        )
+
+        # ====================================
+        # MATCH ENGINE
+        # ====================================
+        matched, fp, fn = evaluate_pair_detail(
+            dokter_text,
+            ai_text
+        )
+
+        # ====================================
+        # FN = missing dari dokter
+        # ====================================
+        for item in fn:
+
+            item = item.strip().lower()
+
+            # skip terlalu pendek
+            if len(item) <= 3:
+                continue
+
+            missing_counter[doctor][item] += 1
+
+            missing_episode[doctor][item].add(
+                episode_id
+            )
+
+    # ====================================
+    # HEADER
+    # ====================================
+    print("\n" + "=" * 140)
+
+    log(
+        "KONTROL MISSING PHRASE ANALYSIS",
+        CYAN
+    )
+
+    print("=" * 140)
+
+    print(
+        f"{'DOCTOR':30} | "
+        f"{'MISSING PHRASE':70} | "
+        f"{'TOTAL EPISODE':15}"
+    )
+
+    print("-" * 140)
+
+    # ====================================
+    # BUILD RESULT
+    # ====================================
+    rows = []
+
+    for doctor, counter in missing_counter.items():
+
+        if not counter:
+            continue
+
+        phrase, total = counter.most_common(1)[0]
+
+        total_episode = len(
+            missing_episode[doctor][phrase]
+        )
+
+        rows.append({
+
+            "doctor": doctor,
+
+            "phrase": phrase,
+
+            "total_episode": total_episode
+        })
+
+    # ====================================
+    # SORT BY EPISODE DESC
+    # ====================================
+    rows = sorted(
+        rows,
+        key=lambda x: x["total_episode"],
+        reverse=True
+    )
+
+    # ====================================
+    # PRINT RESULT
+    # ====================================
+    for r in rows:
+
+        print(
+            f"{r['doctor'][:30]:30} | "
+            f"{r['phrase'][:70]:70} | "
+            f"{r['total_episode']:15}"
+        )
+
 # ====================================
 # MAIN
 # ====================================
@@ -521,8 +913,17 @@ def main():
     # PROBLEM TABLE
     # ====================================
     problems = collect_problem_episodes(result)
-
     print_problem_table(problems)
+
+    # ====================================
+    # PER DOCTOR PERFORMANCE
+    # ====================================
+    print_doctor_performance(data)
+
+    # ====================================
+    # KONTROL MISSING PHRASE
+    # ====================================
+    print_kontrol_missing_phrase(data)
 
     # print()
 
