@@ -3,5 +3,7 @@ DB_CONFIG = {
     "port"        : 1521,
     "service_name": "PRODPM",
     "user"        : "SIMRS_MANAGER",
-    "password"    : "SIMRS_SYSTEM"
+    "password"    : "SIMRS_SYSTEM",
+    #"oracleclient": "E:\xampp\instantclient_11_2"
+    "oracleclient": "/Users/teguhirawan/oracle/instantclient_19_16"
 }

@@ -4,8 +4,9 @@ from config import DB_CONFIG
 # =========================================
 # INIT ORACLE CLIENT (WINDOWS)
 # =========================================
+
 oracledb.init_oracle_client(
-    lib_dir=r"E:\xampp\instantclient_11_2"
+    lib_dir=DB_CONFIG["oracleclient"]
 )
 
 # =========================================
@@ -40,6 +41,8 @@ def fetch_data():
     query = """
         SELECT 
             d.episode_id,
+
+            (SELECT nama FROM sr01_med_dokter_ms WHERE dokter_id=d.dokter_id)namadokter,
 
             d.keluhan_utama          AS dokter_keluhan,
             d.gejala_penyerta        AS dokter_gejala,
@@ -105,8 +108,17 @@ def fetch_data():
                         AND e.pasien_id = ai.pasien_id
                         AND e.episode_id = ai.episode_id
                     )
+        AND NOT EXISTS (
+        				SELECT 1
+        				FROM web_co_registrasi_online_hd
+        				WHERE lokasi_id='001'
+        				AND show_item='1'
+        				AND pasien_id=ai.pasien_id
+        				AND episode_id=ai.episode_id
+        			)
         -- AND ai.created_date <= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
-        -- and ai.episode_id='B126053153517'
+        -- AND ai.created_date >= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
+        -- AND ai.episode_id='126053150406'
     """
 
     cursor.execute(query)
