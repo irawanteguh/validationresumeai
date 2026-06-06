@@ -487,6 +487,8 @@ def print_doctor_performance(data):
     # ====================================
     doctor_stats = defaultdict(lambda: {
 
+        "doctor_uid": "-",
+
         "TP": 0,
         "FP": 0,
         "FN": 0,
@@ -511,6 +513,18 @@ def print_doctor_performance(data):
         )
 
         doctor = doctor.strip().upper()
+
+        doctor_uid = (
+            row.get("dokter_id")
+            or "-"
+        )
+
+        doctor_uid = str(
+            doctor_uid
+        ).strip().upper()
+
+        # simpan uid
+        doctor_stats[doctor]["doctor_uid"] = doctor_uid
 
         doctor_stats[doctor]["TOTAL_DOC"] += 1
 
@@ -591,6 +605,8 @@ def print_doctor_performance(data):
 
         rows.append({
 
+            "doctor_uid": stat["doctor_uid"],
+
             "doctor": doctor,
 
             "total_doc": total_doc,
@@ -618,17 +634,18 @@ def print_doctor_performance(data):
     # ====================================
     # PRINT
     # ====================================
-    print("\n" + "=" * 150)
+    print("\n" + "=" * 170)
 
     log(
         "PER DOCTOR PERFORMANCE ANALYSIS",
         CYAN
     )
 
-    print("=" * 150)
+    print("=" * 170)
 
     print(
         f"{'RANK':5} | "
+        f"{'DOCTOR UID':15} | "
         f"{'DOCTOR':30} | "
         f"{'DOC':6} | "
         f"{'PRECISION':10} | "
@@ -639,7 +656,7 @@ def print_doctor_performance(data):
         f"{'WORST FIELD':15}"
     )
 
-    print("-" * 150)
+    print("-" * 170)
 
     for idx, r in enumerate(rows, start=1):
 
@@ -661,6 +678,7 @@ def print_doctor_performance(data):
         print(
             f"{color}"
             f"{idx:<5} | "
+            f"{r['doctor_uid'][:15]:15} | "
             f"{r['doctor'][:30]:30} | "
             f"{r['total_doc']:6} | "
             f"{r['precision']:9.2f}% | "
@@ -679,16 +697,28 @@ def print_doctor_performance(data):
 
         worst = rows[0]
 
-        print("\n" + "=" * 150)
+        print("\n" + "=" * 170)
 
         log(
             "WORST DOCTOR INSIGHT",
             RED
         )
 
-        print("=" * 150)
+        print("=" * 170)
 
-        print(f"{RED}DOCTOR        : {worst['doctor']}{RESET}")
+        print(
+            f"{RED}"
+            f"DOCTOR UID   : "
+            f"{worst['doctor_uid']}"
+            f"{RESET}"
+        )
+
+        print(
+            f"{RED}"
+            f"DOCTOR       : "
+            f"{worst['doctor']}"
+            f"{RESET}"
+        )
 
         print(f"TOTAL DOC     : {worst['total_doc']}")
         print(f"PRECISION     : {worst['precision']:.2f}%")

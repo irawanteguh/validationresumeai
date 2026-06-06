@@ -4,6 +4,6 @@ DB_CONFIG = {
     "service_name": "PRODPM",
     "user"        : "SIMRS_MANAGER",
     "password"    : "SIMRS_SYSTEM",
-    #"oracleclient": "E:\xampp\instantclient_11_2"
-    "oracleclient": "/Users/teguhirawan/oracle/instantclient_19_16"
+    "oracleclient": r"E:\xampp\instantclient_11_2"
+    # "oracleclient": "/Users/teguhirawan/oracle/instantclient_19_16"
 }

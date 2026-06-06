@@ -32,6 +32,10 @@ STOPWORDS = {
     "pasien"
 }
 
+# =========================
+# CONFIG
+# =========================
+IGNORE_FP_IF_DOCTOR_EMPTY = True
 
 # =========================
 # SAFE TEXT
@@ -171,7 +175,21 @@ def evaluate_pair_detail(dokter, ai):
 
     used_ai = set()
 
-    # cari pasangan terbaik
+    # =====================================
+    # IGNORE FP
+    # dokter kosong tapi AI isi
+    # =====================================
+    if (
+        IGNORE_FP_IF_DOCTOR_EMPTY
+        and not dokter_tokens
+        and ai_tokens
+    ):
+
+        return matched, [], fn
+
+    # =====================================
+    # MATCH ENGINE
+    # =====================================
     for d in dokter_tokens:
 
         best_match = None
@@ -189,6 +207,7 @@ def evaluate_pair_detail(dokter, ai):
             )
 
             if score > best_score:
+
                 best_score = score
                 best_match = a
 
@@ -201,8 +220,11 @@ def evaluate_pair_detail(dokter, ai):
         else:
             fn.append(d)
 
+    # =====================================
     # FP
+    # =====================================
     for a in ai_tokens:
+
         if a not in used_ai:
             fp.append(a)
 

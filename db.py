@@ -41,6 +41,7 @@ def fetch_data():
     query = """
         SELECT 
             d.episode_id,
+            d.dokter_id,
 
             (SELECT nama FROM sr01_med_dokter_ms WHERE dokter_id=d.dokter_id)namadokter,
 
@@ -118,7 +119,8 @@ def fetch_data():
         			)
         -- AND ai.created_date <= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
         -- AND ai.created_date >= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
-        -- AND ai.episode_id='126053150406'
+        -- AND ai.episode_id='226053156601'
+        -- AND d.dokter_id='DR. I0000000006'
     """
 
     cursor.execute(query)
