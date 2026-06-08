@@ -5,9 +5,9 @@ from config import DB_CONFIG
 # INIT ORACLE CLIENT (WINDOWS)
 # =========================================
 
-oracledb.init_oracle_client(
-    lib_dir=DB_CONFIG["oracleclient"]
-)
+# oracledb.init_oracle_client(
+#     lib_dir=DB_CONFIG["oracleclient"]
+# )
 
 # =========================================
 # CONNECTION
