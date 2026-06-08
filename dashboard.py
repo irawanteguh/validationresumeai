@@ -1,0 +1,395 @@
+import pandas as pd
+import streamlit as st
+import plotly.express as px
+
+from streamlit_autorefresh import st_autorefresh
+from monitoring_state import load_history
+
+
+# =========================
+# CONFIG
+# =========================
+st.set_page_config(
+    page_title="AI Medical Monitoring",
+    page_icon="📊",
+    layout="wide"
+)
+
+
+# =========================
+# CSS CARD + LAYOUT FIX
+# =========================
+st.markdown("""
+<style>
+
+.block-container {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0rem !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
+
+div.element-container {
+    margin-bottom: -0.2rem !important;
+}
+
+h1 {
+    font-size: 19px !important;
+    margin-bottom: -0.4rem !important;
+}
+
+h2 {
+    font-size: 15px !important;
+    margin-bottom: -0.2rem !important;
+}
+
+h3 {
+    font-size: 13px !important;
+    margin-bottom: -0.2rem !important;
+}
+
+.card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 14px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.card-title {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.card-value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+div[data-testid="column"] {
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+.js-plotly-plot {
+    margin-top: -0.5rem !important;
+    margin-bottom: -0.5rem !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+
+# =========================
+# AUTO REFRESH
+# =========================
+st_autorefresh(
+    interval=60000,
+    key="monitoring_refresh"
+)
+
+
+# =========================
+# LOAD DATA
+# =========================
+history = load_history()
+
+if not history:
+    st.warning("Belum ada data monitoring")
+    st.stop()
+
+overall = history.get("overall", [])
+
+if not overall:
+    st.warning("Belum ada data overall")
+    st.stop()
+
+df = pd.DataFrame(overall)
+latest = df.iloc[-1]
+
+
+# =========================
+# RENAME LABEL
+# =========================
+df = df.rename(columns={
+    "precision": "Precision",
+    "recall": "Recall",
+    "f1_score": "F1-Score",
+    "FP": "False Positive",
+    "FN": "False Negative"
+})
+
+
+# =========================
+# HEADER
+# =========================
+st.title("📊 AI Medical Monitoring Dashboard")
+st.caption("Realtime AI Extraction Monitoring")
+
+
+# =========================
+# =========================================================
+# 📌 SUMMARY (CARD UI)
+# =========================================================
+st.markdown("### 📌 Summary")
+
+c1, c2, c3, c4 = st.columns(4)
+
+with c1:
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Precision</div>
+        <div class="card-value">{latest['precision']:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with c2:
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Recall</div>
+        <div class="card-value">{latest['recall']:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with c3:
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">F1-Score</div>
+        <div class="card-value">{latest['f1_score']:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with c4:
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Total Data</div>
+        <div class="card-value">{latest['total_data']:,}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# =========================
+# =========================================================
+# 📊 CHART ROW (3 COLUMN = COL-4 STYLE)
+# =========================================================
+col1, col2, col3 = st.columns(3)
+
+
+# =========================
+# PERFORMANCE TREND
+# =========================
+with col1:
+
+    st.markdown("### 📈 Performance Trend")
+
+    fig = px.line(
+        df,
+        x="created_at",
+        y=["Precision", "Recall", "F1-Score"],
+        markers=True,
+        template="plotly_dark"
+    )
+
+    fig.update_layout(
+        height=260,
+        margin=dict(l=0, r=0, t=5, b=0),
+        hovermode="x unified",
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
+
+    st.plotly_chart(
+        fig,
+        width="stretch",
+        config={"displayModeBar": False}
+    )
+
+
+# =========================
+# FP / FN TREND
+# =========================
+with col2:
+
+    st.markdown("### ⚠️ False Positive / False Negative")
+
+    fig2 = px.line(
+        df,
+        x="created_at",
+        y=["False Positive", "False Negative"],
+        markers=True,
+        template="plotly_dark"
+    )
+
+    fig2.update_layout(
+        height=260,
+        margin=dict(l=0, r=0, t=5, b=0),
+        hovermode="x unified",
+        showlegend=False,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)"
+    )
+
+    st.plotly_chart(
+        fig2,
+        width="stretch",
+        config={"displayModeBar": False}
+    )
+
+
+# =========================
+# FIELD F1 SCORE
+# =========================
+with col3:
+
+    st.markdown("### 🧠 Field F1-Score")
+
+    summary_field = history.get("summary_field", [])
+
+    if summary_field:
+
+        field_df = pd.DataFrame(summary_field[-1]["data"])
+
+        fig3 = px.bar(
+            field_df.sort_values("f1_score", ascending=True),
+            x="field",
+            y="f1_score",
+            text="f1_score",
+            color="f1_score",
+            template="plotly_dark",
+            color_continuous_scale=[
+                [0.0, "#e74c3c"],
+                [0.5, "#f1c40f"],
+                [1.0, "#2ecc71"]
+            ]
+        )
+
+        fig3.update_layout(
+            height=260,
+            margin=dict(l=0, r=0, t=5, b=0),
+            showlegend=False,
+            coloraxis_showscale=False,
+            xaxis=dict(showticklabels=True),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)"
+        )
+
+        fig3.update_traces(
+            texttemplate='%{text:.2f}%',
+            textposition='outside'
+        )
+
+        st.plotly_chart(
+            fig3,
+            width="stretch",
+            config={"displayModeBar": False}
+        )
+
+
+# =========================
+# =========================================================
+# 👨‍⚕️ DOCTOR PERFORMANCE (FULL WIDTH / COL-12)
+# =========================================================
+st.markdown("## 👨‍⚕️ Doctor Performance (F1-Score)")
+
+doctor_perf = history.get("doctor_performance", [])
+
+if doctor_perf:
+
+    doc_df = pd.DataFrame(doctor_perf[-1].get("data", []))
+
+    doc_df = doc_df.rename(columns={
+        "dokter": "doctor",
+        "doctor_name": "doctor",
+        "nama_dokter": "doctor",
+        "name": "doctor",
+        "f1": "F1-Score"
+    })
+
+    doc_df = doc_df.dropna(subset=["doctor", "F1-Score"])
+    doc_df = doc_df[doc_df["doctor"].astype(str).str.strip() != ""]
+
+    doc_df = doc_df.groupby("doctor", as_index=False)["F1-Score"].mean()
+
+    doc_df = doc_df.sort_values("F1-Score", ascending=True)
+
+    fig4 = px.bar(
+        doc_df,
+        x="doctor",
+        y="F1-Score",
+        text="F1-Score",
+        color="F1-Score",
+        template="plotly_dark",
+        color_continuous_scale=[
+            [0.0, "#e74c3c"],
+            [0.5, "#f1c40f"],
+            [1.0, "#2ecc71"]
+        ]
+    )
+
+    fig4.update_layout(
+        height=600,
+        margin=dict(l=10, r=10, t=20, b=10),
+        coloraxis_showscale=False,
+        xaxis=dict(
+            showticklabels=True,
+            tickangle=-45,
+            showgrid=False,
+            zeroline=False,
+            tickfont=dict(size=10)
+        ),
+        yaxis=dict(title="F1-Score")
+    )
+
+    fig4.update_traces(
+        hovertemplate="Doctor: %{x}<br>F1-Score: %{y:.2f}%<extra></extra>",
+        texttemplate="%{y:.2f}%",
+        textposition="outside"
+    )
+
+    st.plotly_chart(
+        fig4,
+        width="stretch",
+        config={"displayModeBar": False}
+    )
+
+
+# =========================
+# TABLE SECTION
+# =========================
+colA, colB = st.columns(2)
+
+with colA:
+    st.markdown("## 📋 Top Problem Episode")
+
+    problem_episode = history.get("problem_episode", [])
+
+    if problem_episode:
+        st.dataframe(
+            pd.DataFrame(problem_episode[-1]["data"]),
+            width="stretch"
+        )
+
+with colB:
+    st.markdown("## ⚠️ Missing Phrase")
+
+    missing_data = history.get("kontrol_missing_phrase", [])
+
+    if missing_data:
+        st.dataframe(
+            pd.DataFrame(missing_data[-1]["data"]),
+            width="stretch"
+        )
+
+
+# =========================
+# RAW JSON
+# =========================
+with st.expander("🧾 Raw Monitoring JSON"):
+    st.json(history)
+
+
+# =========================
+# FOOTER
+# =========================
+st.caption("Auto refresh every 60 seconds")

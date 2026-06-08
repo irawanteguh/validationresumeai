@@ -1,0 +1,6 @@
+streamlit
+plotly
+pandas
+streamlit-autorefresh
+rapidfuzz
+oracledb

@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 import time
-
+import json
 from db import fetch_data
 from evaluator import evaluate_dataset
 
@@ -43,6 +43,10 @@ PREV = {
     "meta": {}
 }
 
+# ====================================
+# MONITORING STATE FILE
+# ====================================
+MONITORING_STATE_FILE = "monitoring_state.json"
 
 # ====================================
 # TIME
@@ -50,6 +54,93 @@ PREV = {
 def now():
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+# ====================================
+# SAVE JSON
+# ====================================
+def save_json(data, filename):
+
+    with open(filename, "w", encoding="utf-8") as f:
+
+        json.dump(
+            data,
+            f,
+            indent=4,
+            ensure_ascii=False
+        )
+
+def cleanup_old_data(state, hours=1):
+
+    cutoff = datetime.now() - timedelta(hours=hours)
+
+    def is_valid(item):
+
+        try:
+            ts = datetime.strptime(
+                item.get("created_at", ""),
+                "%Y-%m-%d %H:%M:%S"
+            )
+
+            return ts >= cutoff
+
+        except:
+            return False
+
+    for key in state.keys():
+
+        if isinstance(state[key], list):
+
+            state[key] = [
+                item for item in state[key]
+                if is_valid(item)
+            ]
+
+    return state
+
+# ====================================
+# LOAD MONITORING STATE
+# ====================================
+def load_monitoring_state():
+
+    default_state = {
+        "summary_field": [],
+        "overall": [],
+        "problem_episode": [],
+        "doctor_performance": [],
+        "kontrol_missing_phrase": []
+    }
+
+    if not os.path.exists(MONITORING_STATE_FILE):
+        return default_state
+
+    try:
+
+        with open(MONITORING_STATE_FILE, "r", encoding="utf-8") as f:
+            state = json.load(f)
+
+        # 🔥 CLEAN OLD DATA (> 1 JAM)
+        state = cleanup_old_data(state, hours=1)
+
+        return state
+
+    except Exception:
+        return default_state
+
+# ====================================
+# SAVE MONITORING STATE
+# ====================================
+def save_monitoring_state(section, payload):
+
+    state = load_monitoring_state()
+
+    if section not in state:
+        state[section] = []
+
+    state[section].append(payload)
+
+    # 🔥 cleanup lagi sebelum save
+    state = cleanup_old_data(state, hours=1)
+
+    save_json(state, MONITORING_STATE_FILE)
 
 # ====================================
 # LOG
@@ -77,11 +168,11 @@ def trend_fixed(new, old, width=10):
     diff = round(new - old, 2)
 
     if diff > 0:
-        txt = f"⬆ {diff:.2f}"
+        txt = f"? {diff:.2f}"
         return f"{GREEN}{txt:<{width}}{RESET}"
 
     elif diff < 0:
-        txt = f"⬇ {abs(diff):.2f}"
+        txt = f"? {abs(diff):.2f}"
         return f"{RED}{txt:<{width}}{RESET}"
 
     else:
@@ -104,7 +195,7 @@ def print_matched(matched):
 
         if isinstance(m, dict):
 
-            print(f"  ✓ DOCTOR : {m.get('doctor', '-')}")
+            print(f"  ? DOCTOR : {m.get('doctor', '-')}")
             print(f"    AI     : {m.get('ai', '-')}")
             print(f"    SCORE  : {m.get('score', '-')}")
 
@@ -113,11 +204,11 @@ def print_matched(matched):
             doctor = m[0] if len(m) > 0 else "-"
             ai = m[1] if len(m) > 1 else "-"
 
-            print(f"  ✓ DOCTOR : {doctor}")
+            print(f"  ? DOCTOR : {doctor}")
             print(f"    AI     : {ai}")
 
         else:
-            print(f"  ✓ {str(m)}")
+            print(f"  ? {str(m)}")
 
 
 # ====================================
@@ -164,7 +255,7 @@ def print_match_detail(field_name, r):
 
         if missing:
             for item in missing:
-                print(f"  ✗ {item}")
+                print(f"  ? {item}")
         else:
             print("  -")
 
@@ -202,6 +293,8 @@ def print_summary(result, total_data):
     )
 
     print("-" * 120)
+
+    summary_json = []
 
     for field in FIELDS:
 
@@ -252,6 +345,21 @@ def print_summary(result, total_data):
             f"{recall_text:24} | "
             f"{f1_text:24}"
         )
+
+        summary_json.append({
+            "field": field.upper(),
+            "precision": p,
+            "recall": rc,
+            "f1_score": f1
+        })
+
+    save_monitoring_state(
+        "summary_field",
+        {
+            "created_at": now(),
+            "data": summary_json
+        }
+    )
 
     # ====================================
     # OVERALL
@@ -364,6 +472,19 @@ def print_summary(result, total_data):
         f"{fn_tr:15}"
     )
 
+    save_monitoring_state(
+        "overall",
+        {
+            "created_at": now(),
+            "precision": p,
+            "recall": r,
+            "f1_score": f,
+            "total_data": total_data,
+            "TP": tp,
+            "FP": fp,
+            "FN": fn
+        }
+    )
 
 # ====================================
 # PROBLEM EPISODE
@@ -432,7 +553,7 @@ def print_problem_table(rows):
     print("=" * 120)
 
     if not rows:
-        print("Tidak ada episode bermasalah 🎉")
+        print("Tidak ada episode bermasalah ??")
         return
 
     rows = sorted(
@@ -463,6 +584,14 @@ def print_problem_table(rows):
             f"{r['total']:6} | "
             f"{r['fields']}"
         )
+    
+    save_monitoring_state(
+        "problem_episode",
+        {
+            "created_at": now(),
+            "data": rows
+        }
+    )
 
 
 # ====================================
@@ -693,69 +822,77 @@ def print_doctor_performance(data):
     # ====================================
     # WORST DOCTOR
     # ====================================
-    if rows:
+    # if rows:
 
-        worst = rows[0]
+    #     worst = rows[0]
 
-        print("\n" + "=" * 170)
+    #     print("\n" + "=" * 170)
 
-        log(
-            "WORST DOCTOR INSIGHT",
-            RED
-        )
+    #     log(
+    #         "WORST DOCTOR INSIGHT",
+    #         RED
+    #     )
 
-        print("=" * 170)
+    #     print("=" * 170)
 
-        print(
-            f"{RED}"
-            f"DOCTOR UID   : "
-            f"{worst['doctor_uid']}"
-            f"{RESET}"
-        )
+    #     print(
+    #         f"{RED}"
+    #         f"DOCTOR UID   : "
+    #         f"{worst['doctor_uid']}"
+    #         f"{RESET}"
+    #     )
 
-        print(
-            f"{RED}"
-            f"DOCTOR       : "
-            f"{worst['doctor']}"
-            f"{RESET}"
-        )
+    #     print(
+    #         f"{RED}"
+    #         f"DOCTOR       : "
+    #         f"{worst['doctor']}"
+    #         f"{RESET}"
+    #     )
 
-        print(f"TOTAL DOC     : {worst['total_doc']}")
-        print(f"PRECISION     : {worst['precision']:.2f}%")
-        print(f"RECALL        : {worst['recall']:.2f}%")
-        print(f"F1 SCORE      : {worst['f1']:.2f}%")
+    #     print(f"TOTAL DOC     : {worst['total_doc']}")
+    #     print(f"PRECISION     : {worst['precision']:.2f}%")
+    #     print(f"RECALL        : {worst['recall']:.2f}%")
+    #     print(f"F1 SCORE      : {worst['f1']:.2f}%")
 
-        print(f"FP            : {worst['FP']}")
-        print(f"FN            : {worst['FN']}")
+    #     print(f"FP            : {worst['FP']}")
+    #     print(f"FN            : {worst['FN']}")
 
-        print(
-            f"WORST FIELD   : "
-            f"{worst['worst_field']} "
-            f"({worst['worst_f1']:.2f}%)"
-        )
+    #     print(
+    #         f"WORST FIELD   : "
+    #         f"{worst['worst_field']} "
+    #         f"({worst['worst_f1']:.2f}%)"
+    #     )
 
-        print()
+    #     print()
 
-        print("POSSIBLE CAUSE:")
+    #     print("POSSIBLE CAUSE:")
 
-        if worst["recall"] < 85:
-            print("- Banyak FN / extraction miss")
+    #     if worst["recall"] < 85:
+    #         print("- Banyak FN / extraction miss")
 
-        if worst["precision"] < 85:
-            print("- Banyak FP / hallucination")
+    #     if worst["precision"] < 85:
+    #         print("- Banyak FP / hallucination")
 
-        if worst["worst_field"] == "INSTRUKSI":
-            print("- Instruksi kemungkinan terlalu variatif")
+    #     if worst["worst_field"] == "INSTRUKSI":
+    #         print("- Instruksi kemungkinan terlalu variatif")
 
-        if worst["worst_field"] == "GEJALA":
-            print("- Gejala kemungkinan ambigu / singkatan tinggi")
+    #     if worst["worst_field"] == "GEJALA":
+    #         print("- Gejala kemungkinan ambigu / singkatan tinggi")
 
-        print()
+    #     print()
 
-        print("RECOMMENDATION:")
-        print("- Tambahkan preprocessing singkatan medis")
-        print("- Tambahkan typo normalization")
-        print("- Tambahkan training sample doctor ini")
+    #     print("RECOMMENDATION:")
+    #     print("- Tambahkan preprocessing singkatan medis")
+    #     print("- Tambahkan typo normalization")
+    #     print("- Tambahkan training sample doctor ini")
+
+    save_monitoring_state(
+        "doctor_performance",
+        {
+            "created_at": now(),
+            "data": rows
+        }
+    )
 
 # ====================================
 # KONTROL MISSING PHRASE ANALYSIS
@@ -889,6 +1026,14 @@ def print_kontrol_missing_phrase(data):
             f"{r['phrase'][:70]:70} | "
             f"{r['total_episode']:15}"
         )
+    
+    save_monitoring_state(
+        "kontrol_missing_phrase",
+        {
+            "created_at": now(),
+            "data": rows
+        }
+    )
 
 # ====================================
 # MAIN
@@ -912,27 +1057,27 @@ def main():
     # ====================================
     # DETAIL MATCH (PALING ATAS)
     # ====================================
-    print("\n" + "=" * 120)
+    # print("\n" + "=" * 120)
 
-    log("DETAIL MATCH", CYAN)
+    # log("DETAIL MATCH", CYAN)
 
-    print("=" * 120)
+    # print("=" * 120)
 
-    for field in FIELDS:
+    # for field in FIELDS:
 
-        if field not in result:
-            continue
+    #     if field not in result:
+    #         continue
 
-        r = result[field]
+    #     r = result[field]
 
-        # tampilkan hanya yg tidak perfect
-        if (
-            r["precision"] < 1
-            or r["recall"] < 1
-            or r["f1"] < 1
-        ):
+    #     # tampilkan hanya yg tidak perfect
+    #     if (
+    #         r["precision"] < 1
+    #         or r["recall"] < 1
+    #         or r["f1"] < 1
+    #     ):
 
-            print_match_detail(field, r)
+    #         print_match_detail(field, r)
 
     # ====================================
     # SUMMARY
@@ -963,7 +1108,7 @@ def main():
 # ====================================
 if __name__ == "__main__":
 
-    AUTO_RUN = False
+    AUTO_RUN = True
 
     if AUTO_RUN:
 
@@ -976,7 +1121,7 @@ if __name__ == "__main__":
 
                 print(f"{RED}ERROR:{RESET} {e}")
 
-            time.sleep(10)
+            time.sleep(60)
 
     else:
         main()

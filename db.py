@@ -119,8 +119,8 @@ def fetch_data():
         			)
         -- AND ai.created_date <= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
         -- AND ai.created_date >= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
-        -- AND ai.episode_id='226053156601'
-        -- AND d.dokter_id='DR. I0000000006'
+        --AND ai.episode_id='126053153330'
+        -- AND d.dokter_id='DR. H0000000005'
     """
 
     cursor.execute(query)
