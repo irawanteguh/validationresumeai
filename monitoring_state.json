@@ -649,6 +649,136 @@
                     "f1_score": 81.78
                 }
             ]
+        },
+        {
+            "created_at": "2026-06-08 13:27:47",
+            "data": [
+                {
+                    "field": "KELUHAN",
+                    "precision": 89.66,
+                    "recall": 90.08,
+                    "f1_score": 89.87
+                },
+                {
+                    "field": "GEJALA",
+                    "precision": 86.1,
+                    "recall": 88.91,
+                    "f1_score": 87.48
+                },
+                {
+                    "field": "RIWAYATPS",
+                    "precision": 93.65,
+                    "recall": 91.16,
+                    "f1_score": 92.39
+                },
+                {
+                    "field": "RIWAYATPD",
+                    "precision": 92.62,
+                    "recall": 91.38,
+                    "f1_score": 92.0
+                },
+                {
+                    "field": "STATUS",
+                    "precision": 93.86,
+                    "recall": 97.13,
+                    "f1_score": 95.47
+                },
+                {
+                    "field": "INDIKASI",
+                    "precision": 96.15,
+                    "recall": 97.36,
+                    "f1_score": 96.75
+                },
+                {
+                    "field": "VITAL",
+                    "precision": 94.54,
+                    "recall": 87.87,
+                    "f1_score": 91.08
+                },
+                {
+                    "field": "KONTROL",
+                    "precision": 95.18,
+                    "recall": 85.71,
+                    "f1_score": 90.2
+                },
+                {
+                    "field": "EXPERTISE",
+                    "precision": 95.48,
+                    "recall": 91.53,
+                    "f1_score": 93.46
+                },
+                {
+                    "field": "INSTRUKSI",
+                    "precision": 96.13,
+                    "recall": 71.16,
+                    "f1_score": 81.78
+                }
+            ]
+        },
+        {
+            "created_at": "2026-06-08 13:28:05",
+            "data": [
+                {
+                    "field": "KELUHAN",
+                    "precision": 89.66,
+                    "recall": 90.08,
+                    "f1_score": 89.87
+                },
+                {
+                    "field": "GEJALA",
+                    "precision": 86.1,
+                    "recall": 88.91,
+                    "f1_score": 87.48
+                },
+                {
+                    "field": "RIWAYATPS",
+                    "precision": 93.65,
+                    "recall": 91.16,
+                    "f1_score": 92.39
+                },
+                {
+                    "field": "RIWAYATPD",
+                    "precision": 92.63,
+                    "recall": 91.39,
+                    "f1_score": 92.01
+                },
+                {
+                    "field": "STATUS",
+                    "precision": 93.86,
+                    "recall": 97.12,
+                    "f1_score": 95.46
+                },
+                {
+                    "field": "INDIKASI",
+                    "precision": 96.15,
+                    "recall": 97.36,
+                    "f1_score": 96.75
+                },
+                {
+                    "field": "VITAL",
+                    "precision": 94.54,
+                    "recall": 87.87,
+                    "f1_score": 91.08
+                },
+                {
+                    "field": "KONTROL",
+                    "precision": 95.18,
+                    "recall": 85.71,
+                    "f1_score": 90.2
+                },
+                {
+                    "field": "EXPERTISE",
+                    "precision": 95.48,
+                    "recall": 91.53,
+                    "f1_score": 93.46
+                },
+                {
+                    "field": "INSTRUKSI",
+                    "precision": 96.13,
+                    "recall": 71.16,
+                    "f1_score": 81.78
+                }
+            ]
         }
     ],
     "overall": [
@@ -751,6 +881,26 @@
             "TP": 127868,
             "FP": 8757,
             "FN": 9707
+        },
+        {
+            "created_at": "2026-06-08 13:27:47",
+            "precision": 93.59,
+            "recall": 92.94,
+            "f1_score": 93.27,
+            "total_data": 1883,
+            "TP": 127868,
+            "FP": 8757,
+            "FN": 9707
+        },
+        {
+            "created_at": "2026-06-08 13:28:05",
+            "precision": 93.59,
+            "recall": 92.94,
+            "f1_score": 93.27,
+            "total_data": 1883,
+            "TP": 127869,
+            "FP": 8756,
+            "FN": 9706
         }
     ],
     "problem_episode": [
@@ -1431,6 +1581,156 @@
         },
         {
             "created_at": "2026-06-08 13:26:34",
+            "data": [
+                {
+                    "episode_id": "126053150406",
+                    "fn": 35,
+                    "fp": 28,
+                    "total": 63,
+                    "fields": "gejala, indikasi, riwayatpd, riwayatps"
+                },
+                {
+                    "episode_id": "126053153549",
+                    "fn": 4,
+                    "fp": 10,
+                    "total": 14,
+                    "fields": "expertise, instruksi, kontrol, status, vital"
+                },
+                {
+                    "episode_id": "126053152940",
+                    "fn": 7,
+                    "fp": 3,
+                    "total": 10,
+                    "fields": "instruksi, keluhan, kontrol, status, vital"
+                },
+                {
+                    "episode_id": "126053152996",
+                    "fn": 4,
+                    "fp": 3,
+                    "total": 7,
+                    "fields": "instruksi, keluhan, kontrol, status, vital"
+                },
+                {
+                    "episode_id": "126053152597",
+                    "fn": 1,
+                    "fp": 4,
+                    "total": 5,
+                    "fields": "gejala"
+                },
+                {
+                    "episode_id": "226053154567",
+                    "fn": 3,
+                    "fp": 1,
+                    "total": 4,
+                    "fields": "keluhan, riwayatpd, riwayatps"
+                },
+                {
+                    "episode_id": "126053153531",
+                    "fn": 2,
+                    "fp": 2,
+                    "total": 4,
+                    "fields": "expertise, indikasi"
+                },
+                {
+                    "episode_id": "226053154777",
+                    "fn": 2,
+                    "fp": 0,
+                    "total": 2,
+                    "fields": "riwayatpd, riwayatps"
+                },
+                {
+                    "episode_id": "126053153505",
+                    "fn": 1,
+                    "fp": 0,
+                    "total": 1,
+                    "fields": "gejala"
+                },
+                {
+                    "episode_id": "126053153370",
+                    "fn": 1,
+                    "fp": 0,
+                    "total": 1,
+                    "fields": "indikasi"
+                }
+            ]
+        },
+        {
+            "created_at": "2026-06-08 13:27:47",
+            "data": [
+                {
+                    "episode_id": "126053150406",
+                    "fn": 35,
+                    "fp": 28,
+                    "total": 63,
+                    "fields": "gejala, indikasi, riwayatpd, riwayatps"
+                },
+                {
+                    "episode_id": "126053153549",
+                    "fn": 4,
+                    "fp": 10,
+                    "total": 14,
+                    "fields": "expertise, instruksi, kontrol, status, vital"
+                },
+                {
+                    "episode_id": "126053152940",
+                    "fn": 7,
+                    "fp": 3,
+                    "total": 10,
+                    "fields": "instruksi, keluhan, kontrol, status, vital"
+                },
+                {
+                    "episode_id": "126053152996",
+                    "fn": 4,
+                    "fp": 3,
+                    "total": 7,
+                    "fields": "instruksi, keluhan, kontrol, status, vital"
+                },
+                {
+                    "episode_id": "126053152597",
+                    "fn": 1,
+                    "fp": 4,
+                    "total": 5,
+                    "fields": "gejala"
+                },
+                {
+                    "episode_id": "226053154567",
+                    "fn": 3,
+                    "fp": 1,
+                    "total": 4,
+                    "fields": "keluhan, riwayatpd, riwayatps"
+                },
+                {
+                    "episode_id": "126053153531",
+                    "fn": 2,
+                    "fp": 2,
+                    "total": 4,
+                    "fields": "expertise, indikasi"
+                },
+                {
+                    "episode_id": "226053154777",
+                    "fn": 2,
+                    "fp": 0,
+                    "total": 2,
+                    "fields": "riwayatpd, riwayatps"
+                },
+                {
+                    "episode_id": "126053153505",
+                    "fn": 1,
+                    "fp": 0,
+                    "total": 1,
+                    "fields": "gejala"
+                },
+                {
+                    "episode_id": "126053153370",
+                    "fn": 1,
+                    "fp": 0,
+                    "total": 1,
+                    "fields": "indikasi"
+                }
+            ]
+        },
+        {
+            "created_at": "2026-06-08 13:28:05",
             "data": [
                 {
                     "episode_id": "126053150406",
@@ -7405,6 +7705,596 @@
                     "worst_f1": 0
                 }
             ]
+        },
+        {
+            "created_at": "2026-06-08 13:27:53",
+            "data": [
+                {
+                    "doctor_uid": "DR DI0000000001",
+                    "doctor": "DR DIONISIA VIDYA PARAMITHA, SP. THT-KL",
+                    "total_doc": 6,
+                    "precision": 44.39461883408072,
+                    "recall": 49.74874371859296,
+                    "f1": 46.91943127962085,
+                    "TP": 99,
+                    "FP": 124,
+                    "FN": 100,
+                    "worst_field": "KELUHAN",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. A0000000029",
+                    "doctor": "DR. AGRIFA HASIHOLAN HALOHO, SP. OG",
+                    "total_doc": 15,
+                    "precision": 46.7843631778058,
+                    "recall": 52.18002812939522,
+                    "f1": 49.33510638297872,
+                    "TP": 371,
+                    "FP": 422,
+                    "FN": 340,
+                    "worst_field": "STATUS",
+                    "worst_f1": 4.285714285714286
+                },
+                {
+                    "doctor_uid": "DR. E0000000009",
+                    "doctor": "DR. JUNIATY CAROLINE SIMANJUNTAK, SP.OG",
+                    "total_doc": 14,
+                    "precision": 46.30952380952381,
+                    "recall": 54.329608938547494,
+                    "f1": 50.0,
+                    "TP": 389,
+                    "FP": 451,
+                    "FN": 327,
+                    "worst_field": "EXPERTISE",
+                    "worst_f1": 11.299435028248586
+                },
+                {
+                    "doctor_uid": "DR. H0000000003",
+                    "doctor": "DR. HANDAYU GANITAFURI, SP.AN-TI",
+                    "total_doc": 9,
+                    "precision": 72.07334273624824,
+                    "recall": 40.1413982717989,
+                    "f1": 51.56407669021191,
+                    "TP": 511,
+                    "FP": 198,
+                    "FN": 762,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. E0000000002",
+                    "doctor": "DR. ERWIN FERDIAN, SP. AN",
+                    "total_doc": 6,
+                    "precision": 84.44055944055944,
+                    "recall": 38.242280285035626,
+                    "f1": 52.643051771117165,
+                    "TP": 483,
+                    "FP": 89,
+                    "FN": 780,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. N0000000005",
+                    "doctor": "DR. NOVI ARIYANTI, SP.JP",
+                    "total_doc": 16,
+                    "precision": 59.96186844613918,
+                    "recall": 50.562700964630224,
+                    "f1": 54.86262538159616,
+                    "TP": 629,
+                    "FP": 420,
+                    "FN": 615,
+                    "worst_field": "STATUS",
+                    "worst_f1": 27.51235584843493
+                },
+                {
+                    "doctor_uid": "DR. E0000000000",
+                    "doctor": "DR. ERDIYAN ASTATO SP.OG (K)FM",
+                    "total_doc": 33,
+                    "precision": 57.30468749999999,
+                    "recall": 64.37033786748574,
+                    "f1": 60.6323620582765,
+                    "TP": 1467,
+                    "FP": 1093,
+                    "FN": 812,
+                    "worst_field": "STATUS",
+                    "worst_f1": 17.5787728026534
+                },
+                {
+                    "doctor_uid": "DR. S0000000009",
+                    "doctor": "DR. SELVINA MARYONES ROSSARY MANURUNG, SP.THT-KL",
+                    "total_doc": 7,
+                    "precision": 67.76859504132231,
+                    "recall": 58.362989323843415,
+                    "f1": 62.71510516252391,
+                    "TP": 164,
+                    "FP": 78,
+                    "FN": 117,
+                    "worst_field": "EXPERTISE",
+                    "worst_f1": 14.814814814814813
+                },
+                {
+                    "doctor_uid": "DR. A0000000010",
+                    "doctor": "DR. ADE HANNY, SP.B",
+                    "total_doc": 29,
+                    "precision": 70.97777777777777,
+                    "recall": 59.8575712143928,
+                    "f1": 64.94509963399756,
+                    "TP": 1597,
+                    "FP": 653,
+                    "FN": 1071,
+                    "worst_field": "INSTRUKSI",
+                    "worst_f1": 9.619238476953909
+                },
+                {
+                    "doctor_uid": "DR. M0000000003",
+                    "doctor": "DR. MARIJANTY LEARNY, SP. S",
+                    "total_doc": 18,
+                    "precision": 62.7573300062383,
+                    "recall": 70.10452961672475,
+                    "f1": 66.22778143515471,
+                    "TP": 1006,
+                    "FP": 597,
+                    "FN": 429,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. I0000000005",
+                    "doctor": "DR. I GUSTI AYU NARI LAKSMI DEWI, SP.B",
+                    "total_doc": 7,
+                    "precision": 70.08547008547008,
+                    "recall": 64.82213438735178,
+                    "f1": 67.35112936344969,
+                    "TP": 164,
+                    "FP": 70,
+                    "FN": 89,
+                    "worst_field": "EXPERTISE",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. B0000000004",
+                    "doctor": "DR. BISMO NUGROHO PINANDITO PURBO RAHADI, SP.BS-FTB",
+                    "total_doc": 6,
+                    "precision": 60.317460317460316,
+                    "recall": 85.80645161290322,
+                    "f1": 70.83888149134488,
+                    "TP": 266,
+                    "FP": 175,
+                    "FN": 44,
+                    "worst_field": "STATUS",
+                    "worst_f1": 63.76811594202899
+                },
+                {
+                    "doctor_uid": "DR. R0000000014",
+                    "doctor": "DR. R.A. NINO TETUKO SP.AN",
+                    "total_doc": 7,
+                    "precision": 57.08333333333333,
+                    "recall": 94.91916859122402,
+                    "f1": 71.29228100607112,
+                    "TP": 411,
+                    "FP": 309,
+                    "FN": 22,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. N0000000007",
+                    "doctor": "DR. MUHAMMAD REZA, SP.JP",
+                    "total_doc": 13,
+                    "precision": 79.82954545454545,
+                    "recall": 89.30084745762711,
+                    "f1": 84.3,
+                    "TP": 843,
+                    "FP": 213,
+                    "FN": 101,
+                    "worst_field": "EXPERTISE",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. Y0000000005",
+                    "doctor": "DR. YUDISTIRA, SP.N, AIFO-K, FINA",
+                    "total_doc": 24,
+                    "precision": 84.31200701139352,
+                    "recall": 95.43650793650794,
+                    "f1": 89.53001395998139,
+                    "TP": 1924,
+                    "FP": 358,
+                    "FN": 92,
+                    "worst_field": "STATUS",
+                    "worst_f1": 82.22013170272814
+                },
+                {
+                    "doctor_uid": "DR. I0000000006",
+                    "doctor": "DR. NURBANI SP.A",
+                    "total_doc": 37,
+                    "precision": 94.5945945945946,
+                    "recall": 87.58758758758759,
+                    "f1": 90.95634095634097,
+                    "TP": 1750,
+                    "FP": 100,
+                    "FN": 248,
+                    "worst_field": "INDIKASI",
+                    "worst_f1": 48.68421052631579
+                },
+                {
+                    "doctor_uid": "DR. A0000000016",
+                    "doctor": "DR. AHMAD AFFANDI, SP.B",
+                    "total_doc": 20,
+                    "precision": 85.24374176548089,
+                    "recall": 99.69183359013869,
+                    "f1": 91.9034090909091,
+                    "TP": 647,
+                    "FP": 112,
+                    "FN": 2,
+                    "worst_field": "STATUS",
+                    "worst_f1": 76.50727650727652
+                },
+                {
+                    "doctor_uid": "DR. A0000000026",
+                    "doctor": "DR. ACHMAD DIMAS PUTRANTO, SP.B-TKV, MPH",
+                    "total_doc": 7,
+                    "precision": 98.08153477218225,
+                    "recall": 92.32505643340858,
+                    "f1": 95.11627906976744,
+                    "TP": 409,
+                    "FP": 8,
+                    "FN": 34,
+                    "worst_field": "KELUHAN",
+                    "worst_f1": 45.454545454545446
+                },
+                {
+                    "doctor_uid": "DR. N0000000000",
+                    "doctor": "DR. NATASHA N.P. MANURUNG, M.KED (PED), SP.A",
+                    "total_doc": 92,
+                    "precision": 95.18862766539092,
+                    "recall": 95.1192861045347,
+                    "f1": 95.15394425214065,
+                    "TP": 5223,
+                    "FP": 264,
+                    "FN": 268,
+                    "worst_field": "RIWAYATPD",
+                    "worst_f1": 82.830626450116
+                },
+                {
+                    "doctor_uid": "DR. G0000000002",
+                    "doctor": "DR. GUSFIATRA, SP. N",
+                    "total_doc": 16,
+                    "precision": 97.03923019985197,
+                    "recall": 93.84395132426629,
+                    "f1": 95.41484716157206,
+                    "TP": 1311,
+                    "FP": 40,
+                    "FN": 86,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 0
+                },
+                {
+                    "doctor_uid": "DR. N0000000009",
+                    "doctor": "DR ARDENTRY SP.A, M.KES",
+                    "total_doc": 101,
+                    "precision": 96.92697035430224,
+                    "recall": 94.73498233215548,
+                    "f1": 95.81844174410293,
+                    "TP": 5362,
+                    "FP": 170,
+                    "FN": 298,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 87.13550600343054
+                },
+                {
+                    "doctor_uid": "DR. A0000000004",
+                    "doctor": "DR. ARIEF FADHILAH, SP.JP, FIHA",
+                    "total_doc": 34,
+                    "precision": 95.81844174410293,
+                    "recall": 96.85693641618496,
+                    "f1": 96.33489040603665,
+                    "TP": 2681,
+                    "FP": 117,
+                    "FN": 87,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 87.77777777777779
+                },
+                {
+                    "doctor_uid": "DR. H0000000005",
+                    "doctor": "DR. HARRIS M.BANADJI, SP.U",
+                    "total_doc": 25,
+                    "precision": 96.70442842430485,
+                    "recall": 96.0122699386503,
+                    "f1": 96.35710620831196,
+                    "TP": 939,
+                    "FP": 32,
+                    "FN": 39,
+                    "worst_field": "INSTRUKSI",
+                    "worst_f1": 53.84615384615385
+                },
+                {
+                    "doctor_uid": "DR. M0000000010",
+                    "doctor": "DR. MARSCHA IRADYTA AIS, SP.P",
+                    "total_doc": 72,
+                    "precision": 96.60220495210555,
+                    "recall": 96.18499190210545,
+                    "f1": 96.39314697926059,
+                    "TP": 5345,
+                    "FP": 188,
+                    "FN": 212,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 84.21052631578948
+                },
+                {
+                    "doctor_uid": "DR. I0000000002",
+                    "doctor": "DR. IZATI RAHMI, SP.S",
+                    "total_doc": 59,
+                    "precision": 96.18591449352493,
+                    "recall": 96.83872120021432,
+                    "f1": 96.51121395514419,
+                    "TP": 5422,
+                    "FP": 215,
+                    "FN": 177,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 79.87616099071208
+                },
+                {
+                    "doctor_uid": "DR. N0000000006",
+                    "doctor": "DR. RIMA SAGITA SP.JP",
+                    "total_doc": 55,
+                    "precision": 96.36913767019666,
+                    "recall": 96.68256721595837,
+                    "f1": 96.52559800844247,
+                    "TP": 4459,
+                    "FP": 168,
+                    "FN": 153,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 85.16129032258067
+                },
+                {
+                    "doctor_uid": "DR RU0000000001",
+                    "doctor": "DR RUBEN SALAMAT PENGIHUTAN, SP.PD",
+                    "total_doc": 214,
+                    "precision": 96.83985675692655,
+                    "recall": 96.27131347198801,
+                    "f1": 96.55474818341268,
+                    "TP": 15414,
+                    "FP": 503,
+                    "FN": 597,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 86.93009118541033
+                },
+                {
+                    "doctor_uid": "DR. S0000000012",
+                    "doctor": "DR. RISKY AKAPUTRA, SP.P",
+                    "total_doc": 66,
+                    "precision": 96.286836935167,
+                    "recall": 96.83856945267733,
+                    "f1": 96.5619150822579,
+                    "TP": 4901,
+                    "FP": 189,
+                    "FN": 160,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 83.27402135231317
+                },
+                {
+                    "doctor_uid": "DR. M0000000001",
+                    "doctor": "DR. MURSIDA SYARIFUDDIN KAMRAN, SP.PD",
+                    "total_doc": 73,
+                    "precision": 98.2644206227667,
+                    "recall": 95.35997357992075,
+                    "f1": 96.79041314003184,
+                    "TP": 5775,
+                    "FP": 102,
+                    "FN": 281,
+                    "worst_field": "VITAL",
+                    "worst_f1": 82.60309278350516
+                },
+                {
+                    "doctor_uid": "DR. S0000000013",
+                    "doctor": "DR. RIRIEN RAZIKA RAMDHANI, MARS, SP. P, FAPSR, FISR, F.ONKT",
+                    "total_doc": 26,
+                    "precision": 97.17223650385604,
+                    "recall": 96.87339825730395,
+                    "f1": 97.02258726899385,
+                    "TP": 1890,
+                    "FP": 55,
+                    "FN": 61,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 12.76595744680851
+                },
+                {
+                    "doctor_uid": "DR. S0000000004",
+                    "doctor": "DR. SRI DHUNY ATAS ASRI, SP.P",
+                    "total_doc": 87,
+                    "precision": 97.13292788879235,
+                    "recall": 97.40090024684187,
+                    "f1": 97.26672950047124,
+                    "TP": 6708,
+                    "FP": 198,
+                    "FN": 179,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 87.65060240963855
+                },
+                {
+                    "doctor_uid": "DR. B0000000000",
+                    "doctor": "DR. BRAM PARINGKOAN, SP.PD",
+                    "total_doc": 142,
+                    "precision": 96.90359552638877,
+                    "recall": 97.94469357249626,
+                    "f1": 97.42136319286345,
+                    "TP": 10484,
+                    "FP": 335,
+                    "FN": 220,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 88.11973807296539
+                },
+                {
+                    "doctor_uid": "DR. P0000000008",
+                    "doctor": "DR. PUTRI DWI BRALIANTI, SP. PD",
+                    "total_doc": 137,
+                    "precision": 97.23606705935659,
+                    "recall": 97.75874635568513,
+                    "f1": 97.49670619235836,
+                    "TP": 10730,
+                    "FP": 305,
+                    "FN": 246,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 90.05524861878452
+                },
+                {
+                    "doctor_uid": "DR. P0000000006",
+                    "doctor": "DR. PRAWITASARI EVIARINI, SP.PD",
+                    "total_doc": 60,
+                    "precision": 97.74622492675232,
+                    "recall": 97.74622492675232,
+                    "f1": 97.74622492675232,
+                    "TP": 4337,
+                    "FP": 100,
+                    "FN": 100,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 73.55163727959699
+                },
+                {
+                    "doctor_uid": "DR. H0000000002",
+                    "doctor": "DR. HENDRIVAND, SP.OG",
+                    "total_doc": 39,
+                    "precision": 98.34958739684922,
+                    "recall": 97.61727475800447,
+                    "f1": 97.98206278026906,
+                    "TP": 2622,
+                    "FP": 44,
+                    "FN": 64,
+                    "worst_field": "KELUHAN",
+                    "worst_f1": 89.0625
+                },
+                {
+                    "doctor_uid": "DR. H0000000008",
+                    "doctor": "DR. HARRY JONATHAN, SP. OT",
+                    "total_doc": 19,
+                    "precision": 96.78217821782178,
+                    "recall": 99.36467598475222,
+                    "f1": 98.05642633228841,
+                    "TP": 1564,
+                    "FP": 52,
+                    "FN": 10,
+                    "worst_field": "RIWAYATPD",
+                    "worst_f1": 88.18897637795276
+                },
+                {
+                    "doctor_uid": "DR. B0000000003",
+                    "doctor": "DR. ARDI ARDIAN SP.PD",
+                    "total_doc": 82,
+                    "precision": 99.1386590103023,
+                    "recall": 97.07292872498759,
+                    "f1": 98.09491978609626,
+                    "TP": 5870,
+                    "FP": 51,
+                    "FN": 177,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 35.51401869158878
+                },
+                {
+                    "doctor_uid": "DR. R0000000005",
+                    "doctor": "DR. R. SIDDHI ANDIKA, SP.U",
+                    "total_doc": 20,
+                    "precision": 98.67139061116032,
+                    "recall": 99.55317247542449,
+                    "f1": 99.11032028469752,
+                    "TP": 1114,
+                    "FP": 15,
+                    "FN": 5,
+                    "worst_field": "INDIKASI",
+                    "worst_f1": 96.3855421686747
+                },
+                {
+                    "doctor_uid": "DR. R0000000020",
+                    "doctor": "DR. RADITYA PRATAMA SP.B",
+                    "total_doc": 13,
+                    "precision": 99.2849846782431,
+                    "recall": 99.18367346938776,
+                    "f1": 99.2343032159265,
+                    "TP": 972,
+                    "FP": 7,
+                    "FN": 8,
+                    "worst_field": "INDIKASI",
+                    "worst_f1": 80.0
+                },
+                {
+                    "doctor_uid": "DR. J0000000003",
+                    "doctor": "DR. JULISTIAN, SP.B",
+                    "total_doc": 12,
+                    "precision": 98.82352941176471,
+                    "recall": 99.78401727861771,
+                    "f1": 99.30145083288555,
+                    "TP": 924,
+                    "FP": 11,
+                    "FN": 2,
+                    "worst_field": "KELUHAN",
+                    "worst_f1": 91.66666666666666
+                },
+                {
+                    "doctor_uid": "DR. I0000000000",
+                    "doctor": "DR. INA ROCHAYATI, SP.A",
+                    "total_doc": 47,
+                    "precision": 99.48358539284396,
+                    "recall": 99.19087899963222,
+                    "f1": 99.33701657458562,
+                    "TP": 2697,
+                    "FP": 14,
+                    "FN": 22,
+                    "worst_field": "GEJALA",
+                    "worst_f1": 97.76119402985076
+                },
+                {
+                    "doctor_uid": "DR. M0000000005",
+                    "doctor": "DR. MARGARETA ARIANNI, SP. OT",
+                    "total_doc": 16,
+                    "precision": 99.65753424657534,
+                    "recall": 99.54389965792474,
+                    "f1": 99.60068454078723,
+                    "TP": 873,
+                    "FP": 3,
+                    "FN": 4,
+                    "worst_field": "KELUHAN",
+                    "worst_f1": 97.67441860465117
+                },
+                {
+                    "doctor_uid": "DR. W0000000003",
+                    "doctor": "DR. WIWIT IDA CHAHYANI, SP.S",
+                    "total_doc": 19,
+                    "precision": 99.73642593568793,
+                    "recall": 99.73642593568793,
+                    "f1": 99.73642593568793,
+                    "TP": 1892,
+                    "FP": 5,
+                    "FN": 5,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 73.68421052631578
+                },
+                {
+                    "doctor_uid": "DR. P0000000007",
+                    "doctor": "DR. PEBRIANSYAH, SP.A",
+                    "total_doc": 51,
+                    "precision": 100.0,
+                    "recall": 99.75626740947075,
+                    "f1": 99.8779850095869,
+                    "TP": 2865,
+                    "FP": 0,
+                    "FN": 7,
+                    "worst_field": "RIWAYATPD",
+                    "worst_f1": 98.93238434163702
+                },
+                {
+                    "doctor_uid": "DR. R0000000010",
+                    "doctor": "DR. ROBBY AL AMIN SP.AN",
+                    "total_doc": 7,
+                    "precision": 100.0,
+                    "recall": 100.0,
+                    "f1": 100.0,
+                    "TP": 610,
+                    "FP": 0,
+                    "FN": 0,
+                    "worst_field": "KONTROL",
+                    "worst_f1": 0
+                }
+            ]
         }
     ],
     "kontrol_missing_phrase": [
@@ -8490,6 +9380,126 @@
         },
         {
             "created_at": "2026-06-08 13:26:40",
+            "data": [
+                {
+                    "doctor": "DR. ADE HANNY, SP.B",
+                    "phrase": "kontrol luka post operasi",
+                    "total_episode": 26
+                },
+                {
+                    "doctor": "DR. ERDIYAN ASTATO SP.OG (K)FM",
+                    "phrase": "1 minggu pasca rawat",
+                    "total_episode": 23
+                },
+                {
+                    "doctor": "DR. MARIJANTY LEARNY, SP. S",
+                    "phrase": "7 hari",
+                    "total_episode": 17
+                },
+                {
+                    "doctor": "DR. ARDI ARDIAN SP.PD",
+                    "phrase": "sabtu pagi",
+                    "total_episode": 13
+                },
+                {
+                    "doctor": "DR. RIRIEN RAZIKA RAMDHANI, MARS, SP. P, FAPSR, FISR, F.ONKT",
+                    "phrase": "klinis perbaikan dapat rawat jalan",
+                    "total_episode": 10
+                },
+                {
+                    "doctor": "DR. NOVI ARIYANTI, SP.JP",
+                    "phrase": "7 hari",
+                    "total_episode": 9
+                },
+                {
+                    "doctor": "DR. AGRIFA HASIHOLAN HALOHO, SP. OG",
+                    "phrase": "1 minggu",
+                    "total_episode": 6
+                },
+                {
+                    "doctor": "DR. WIWIT IDA CHAHYANI, SP.S",
+                    "phrase": "28 mei 2026",
+                    "total_episode": 3
+                },
+                {
+                    "doctor": "DR. NURBANI SP.A",
+                    "phrase": "1minggu ke faskes i",
+                    "total_episode": 3
+                },
+                {
+                    "doctor": "DR. GUSFIATRA, SP. N",
+                    "phrase": "4 juni 2026",
+                    "total_episode": 3
+                },
+                {
+                    "doctor": "DR. MUHAMMAD REZA, SP.JP",
+                    "phrase": "7 hari",
+                    "total_episode": 3
+                },
+                {
+                    "doctor": "DR. RIZKY RAHMADHANY, SP.OG",
+                    "phrase": "1minggu",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. BONDAN HERWINDO, SP.THT-KL",
+                    "phrase": "poli tht selasa 26/5/26",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. SELVINA MARYONES ROSSARY MANURUNG, SP.THT-KL",
+                    "phrase": "25 mei 2026",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. UNEDO HENCE MARKUS SIHOMBING, SP.OG. SUBSP. ONK",
+                    "phrase": "bawa hasil pa",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. HARRIS M.BANADJI, SP.U",
+                    "phrase": "gejala masih ada",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR DIONISIA VIDYA PARAMITHA, SP. THT-KL",
+                    "phrase": "ke poli tht kl hari rabu tgl 10 juni 2026",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. ARIEF PURWODITO SP.BS",
+                    "phrase": "rabu 10/06/2026",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DRG. VAZA NADIA ZAIRINAL, SP. BM",
+                    "phrase": "3 juni 2026",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. I GUSTI AYU NARI LAKSMI DEWI, SP.B",
+                    "phrase": "hari selasa",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. MURSIDA SYARIFUDDIN KAMRAN, SP.PD",
+                    "phrase": "ke faskes terdekat",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. JIHAN ROSITA SP.KK",
+                    "phrase": "kontrol poli kulit rabu",
+                    "total_episode": 1
+                },
+                {
+                    "doctor": "DR. BRAM PARINGKOAN, SP.PD",
+                    "phrase": "gejala masih ada",
+                    "total_episode": 1
+                }
+            ]
+        },
+        {
+            "created_at": "2026-06-08 13:27:53",
             "data": [
                 {
                     "doctor": "DR. ADE HANNY, SP.B",
