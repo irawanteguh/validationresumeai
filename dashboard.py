@@ -205,18 +205,24 @@ st.markdown("### 📌 Summary")
 
 c1, c2, c3, c4 = st.columns(4)
 
-def render_metric_card(title, value, previous, suffix="%"):
+def render_metric_card(title, value, previous, suffix="%", is_integer=False):
     diff = value - previous
 
     if diff > 0:
         color = "#2ecc71"
-        delta = f"? +{diff:.2f}{suffix}"
+        delta = f"? +{diff:,.0f}" if is_integer else f"? +{diff:.2f}{suffix}"
     elif diff < 0:
         color = "#e74c3c"
-        delta = f"? {abs(diff):.2f}{suffix}"
+        delta = f"? {abs(diff):,.0f}" if is_integer else f"? {abs(diff):.2f}{suffix}"
     else:
         color = "#95a5a6"
-        delta = f"? 0.00{suffix}"
+        delta = "? 0"
+
+    value_display = (
+        f"{value:,.0f}"
+        if is_integer
+        else f"{value:.2f}{suffix}"
+    )
 
     return f"""
     <div class="card">
@@ -228,7 +234,7 @@ def render_metric_card(title, value, previous, suffix="%"):
             align-items:center;
         ">
             <div class="card-value">
-                {value:.2f}{suffix}
+                {value_display}
             </div>
 
             <div style="
@@ -278,7 +284,7 @@ with c4:
             "Total Data",
             latest["total_data"],
             previous["total_data"],
-            suffix=""
+            is_integer=True
         ),
         unsafe_allow_html=True
     )
