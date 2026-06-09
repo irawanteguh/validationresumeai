@@ -216,26 +216,29 @@ def render_metric_card(
 
     if diff > 0:
         color = "#2ecc71"
+        icon = "?"
         delta = (
-            f"? +{diff:,.0f}"
+            f"{icon} +{diff:,.0f}"
             if is_integer
-            else f"? +{diff:.2f}{suffix}"
+            else f"{icon} +{diff:.2f}{suffix}"
         )
 
     elif diff < 0:
         color = "#e74c3c"
+        icon = "?"
         delta = (
-            f"? {abs(diff):,.0f}"
+            f"{icon} {abs(diff):,.0f}"
             if is_integer
-            else f"? {abs(diff):.2f}{suffix}"
+            else f"{icon} {abs(diff):.2f}{suffix}"
         )
 
     else:
         color = "#95a5a6"
+        icon = "—"
         delta = (
-            "? 0"
+            f"{icon} 0"
             if is_integer
-            else f"? 0.00{suffix}"
+            else f"{icon} 0.00{suffix}"
         )
 
     value_text = (
@@ -244,29 +247,20 @@ def render_metric_card(
         else f"{value:.2f}{suffix}"
     )
 
-    return f"""
-    <div class="card">
-        <div class="card-title">{title}</div>
+    html = f"""
+<div class="card">
+    <div class="card-title">{title}</div>
 
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-        ">
-            <div class="card-value">
-                {value_text}
-            </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div class="card-value">{value_text}</div>
 
-            <div style="
-                color:{color};
-                font-size:13px;
-                font-weight:600;
-            ">
-                {delta}
-            </div>
+        <div style="color:{color};font-size:13px;font-weight:600;">
+            {delta}
         </div>
     </div>
-    """
+</div>
+"""
+    return html
 
 with c1:
     st.markdown(
