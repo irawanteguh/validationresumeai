@@ -216,7 +216,7 @@ def render_metric_card(
 
     if diff > 0:
         color = "#2ecc71"
-        icon = "?"
+        icon = "▲"
         delta = (
             f"{icon} +{diff:,.0f}"
             if is_integer
@@ -225,7 +225,7 @@ def render_metric_card(
 
     elif diff < 0:
         color = "#e74c3c"
-        icon = "?"
+        icon = "▼"
         delta = (
             f"{icon} {abs(diff):,.0f}"
             if is_integer
