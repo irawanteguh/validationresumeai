@@ -84,7 +84,7 @@ div[data-testid="column"] {
 # AUTO REFRESH
 # =========================
 st_autorefresh(
-    interval=60000,
+    interval=300000,  # 5 menit
     key="monitoring_refresh"
 )
 
@@ -105,7 +105,47 @@ if not overall:
     st.stop()
 
 df = pd.DataFrame(overall)
+
+if "created_at" not in df.columns:
+    st.error("Kolom created_at tidak ditemukan pada monitoring_state.json")
+    st.stop()
+
+# pastikan timestamp valid
+df["created_at"] = pd.to_datetime(
+    df["created_at"],
+    errors="coerce"
+)
+
+df = df.dropna(subset=["created_at"])
+
+if df.empty:
+    st.warning("Data monitoring tidak valid")
+    st.stop()
+
+# urutkan berdasarkan waktu
+df = df.sort_values("created_at")
+
+# ==========================================
+# FILTER DATA 24 JAM TERAKHIR
+# ==========================================
+last_time = df["created_at"].max()
+start_time = last_time - pd.Timedelta(hours=24)
+
+df = df[
+    df["created_at"] >= start_time
+]
+
+if df.empty:
+    st.warning("Belum ada data monitoring dalam 24 jam terakhir")
+    st.stop()
+
 latest = df.iloc[-1]
+
+last_update = latest["created_at"].strftime(
+    "%d-%m-%Y %H:%M:%S"
+)
+
+total_snapshot = len(df)
 
 
 # =========================
@@ -124,7 +164,12 @@ df = df.rename(columns={
 # HEADER
 # =========================
 st.title("📊 AI Medical Monitoring Dashboard")
-st.caption("Realtime AI Extraction Monitoring")
+
+st.caption(
+    f"Last Update: {last_update} | "
+    f"Window: 24 Hours | "
+    f"Snapshots: {total_snapshot}"
+)
 
 
 # =========================
@@ -199,6 +244,11 @@ with col1:
         plot_bgcolor="rgba(0,0,0,0)"
     )
 
+    fig.update_xaxes(
+        tickformat="%d/%m %H:%M",
+        title=""
+    )
+
     st.plotly_chart(
         fig,
         width="stretch",
@@ -228,6 +278,11 @@ with col2:
         showlegend=False,
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)"
+    )
+
+    fig2.update_xaxes(
+        tickformat="%d/%m %H:%M",
+        title=""
     )
 
     st.plotly_chart(
@@ -392,4 +447,4 @@ with st.expander("🧾 Raw Monitoring JSON"):
 # =========================
 # FOOTER
 # =========================
-st.caption("Auto refresh every 60 seconds")
+st.caption("AI Medical Monitoring Dashboard")

@@ -49,6 +49,12 @@ PREV = {
 MONITORING_STATE_FILE = "monitoring_state.json"
 
 # ====================================
+# CONFIG
+# ====================================
+MONITORING_RETENTION_HOURS = 24
+RUN_INTERVAL_SECONDS = 3600
+
+# ====================================
 # TIME
 # ====================================
 def now():
@@ -68,7 +74,7 @@ def save_json(data, filename):
             ensure_ascii=False
         )
 
-def cleanup_old_data(state, hours=1):
+def cleanup_old_data(state, hours=MONITORING_RETENTION_HOURS):
 
     cutoff = datetime.now() - timedelta(hours=hours)
 
@@ -118,7 +124,7 @@ def load_monitoring_state():
             state = json.load(f)
 
         # 🔥 CLEAN OLD DATA (> 1 JAM)
-        state = cleanup_old_data(state, hours=1)
+        state = cleanup_old_data(state, hours=MONITORING_RETENTION_HOURS)
 
         return state
 
@@ -138,7 +144,7 @@ def save_monitoring_state(section, payload):
     state[section].append(payload)
 
     # 🔥 cleanup lagi sebelum save
-    state = cleanup_old_data(state, hours=1)
+    state = cleanup_old_data(state, hours=MONITORING_RETENTION_HOURS)
 
     save_json(state, MONITORING_STATE_FILE)
 
@@ -1121,7 +1127,7 @@ if __name__ == "__main__":
 
                 print(f"{RED}ERROR:{RESET} {e}")
 
-            time.sleep(60)
+            time.sleep(RUN_INTERVAL_SECONDS)
 
     else:
         main()
