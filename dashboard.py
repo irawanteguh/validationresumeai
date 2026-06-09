@@ -84,7 +84,7 @@ div[data-testid="column"] {
 # AUTO REFRESH
 # =========================
 st_autorefresh(
-    interval=300000,  # 5 menit
+    interval=3600000,  # 1 jam
     key="monitoring_refresh"
 )
 
