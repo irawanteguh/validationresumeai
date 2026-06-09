@@ -1057,27 +1057,27 @@ def main():
     # ====================================
     # DETAIL MATCH (PALING ATAS)
     # ====================================
-    # print("\n" + "=" * 120)
+    print("\n" + "=" * 120)
 
-    # log("DETAIL MATCH", CYAN)
+    log("DETAIL MATCH", CYAN)
 
-    # print("=" * 120)
+    print("=" * 120)
 
-    # for field in FIELDS:
+    for field in FIELDS:
 
-    #     if field not in result:
-    #         continue
+        if field not in result:
+            continue
 
-    #     r = result[field]
+        r = result[field]
 
-    #     # tampilkan hanya yg tidak perfect
-    #     if (
-    #         r["precision"] < 1
-    #         or r["recall"] < 1
-    #         or r["f1"] < 1
-    #     ):
+        # tampilkan hanya yg tidak perfect
+        if (
+            r["precision"] < 1
+            or r["recall"] < 1
+            or r["f1"] < 1
+        ):
 
-    #         print_match_detail(field, r)
+            print_match_detail(field, r)
 
     # ====================================
     # SUMMARY
