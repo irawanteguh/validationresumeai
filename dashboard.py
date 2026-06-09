@@ -141,12 +141,36 @@ if df.empty:
 
 latest = df.iloc[-1]
 
+if len(df) > 1:
+    previous = df.iloc[-2]
+else:
+    previous = latest
+
 last_update = latest["created_at"].strftime(
     "%d-%m-%Y %H:%M:%S"
 )
 
 total_snapshot = len(df)
 
+def metric_delta(current, previous):
+    diff = current - previous
+
+    if diff > 0:
+        return f"?? ? {diff:.2f}%"
+    elif diff < 0:
+        return f"?? ? {abs(diff):.2f}%"
+    else:
+        return "? 0.00%"
+
+def total_data_delta(current, previous):
+    diff = int(current - previous)
+
+    if diff > 0:
+        return f"?? +{diff:,}"
+    elif diff < 0:
+        return f"?? {diff:,}"
+    else:
+        return "? 0"
 
 # =========================
 # RENAME LABEL
@@ -185,6 +209,12 @@ with c1:
     <div class="card">
         <div class="card-title">Precision</div>
         <div class="card-value">{latest['precision']:.2f}%</div>
+        <div style="font-size:12px;margin-top:4px">
+            {metric_delta(
+                latest['precision'],
+                previous['precision']
+            )}
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -193,6 +223,12 @@ with c2:
     <div class="card">
         <div class="card-title">Recall</div>
         <div class="card-value">{latest['recall']:.2f}%</div>
+        <div style="font-size:12px;margin-top:4px">
+            {metric_delta(
+                latest['recall'],
+                previous['recall']
+            )}
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -201,6 +237,12 @@ with c3:
     <div class="card">
         <div class="card-title">F1-Score</div>
         <div class="card-value">{latest['f1_score']:.2f}%</div>
+        <div style="font-size:12px;margin-top:4px">
+            {metric_delta(
+                latest['f1_score'],
+                previous['f1_score']
+            )}
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -209,6 +251,12 @@ with c4:
     <div class="card">
         <div class="card-title">Total Data</div>
         <div class="card-value">{latest['total_data']:,}</div>
+        <div style="font-size:12px;margin-top:4px">
+            {total_data_delta(
+                latest['total_data'],
+                previous['total_data']
+            )}
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
