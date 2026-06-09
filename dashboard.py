@@ -245,7 +245,7 @@ with col1:
     )
 
     fig.update_xaxes(
-        tickformat="%d/%m %H:%M",
+        tickformat="%H:%M",
         title=""
     )
 
@@ -281,7 +281,7 @@ with col2:
     )
 
     fig2.update_xaxes(
-        tickformat="%d/%m %H:%M",
+        tickformat="%H:%M",
         title=""
     )
 
