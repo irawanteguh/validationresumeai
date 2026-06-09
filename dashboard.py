@@ -156,21 +156,22 @@ def metric_delta(current, previous):
     diff = current - previous
 
     if diff > 0:
-        return f"?? ? {diff:.2f}%"
+        return f"▲ +{diff:.2f}%"
     elif diff < 0:
-        return f"?? ? {abs(diff):.2f}%"
+        return f"▼ {abs(diff):.2f}%"
     else:
-        return "? 0.00%"
-
+        return "▬ 0.00%"
+    
 def total_data_delta(current, previous):
     diff = int(current - previous)
 
     if diff > 0:
-        return f"?? +{diff:,}"
+        return f"▲ +{diff:,}"
     elif diff < 0:
-        return f"?? {diff:,}"
+        return f"▼ {abs(diff):,}"
     else:
-        return "? 0"
+        return "▬ 0"
+
 
 # =========================
 # RENAME LABEL
@@ -204,62 +205,83 @@ st.markdown("### 📌 Summary")
 
 c1, c2, c3, c4 = st.columns(4)
 
-with c1:
-    st.markdown(f"""
+def render_metric_card(title, value, previous, suffix="%"):
+    diff = value - previous
+
+    if diff > 0:
+        color = "#2ecc71"
+        delta = f"? +{diff:.2f}{suffix}"
+    elif diff < 0:
+        color = "#e74c3c"
+        delta = f"? {abs(diff):.2f}{suffix}"
+    else:
+        color = "#95a5a6"
+        delta = f"? 0.00{suffix}"
+
+    return f"""
     <div class="card">
-        <div class="card-title">Precision</div>
-        <div class="card-value">{latest['precision']:.2f}%</div>
-        <div style="font-size:12px;margin-top:4px">
-            {metric_delta(
-                latest['precision'],
-                previous['precision']
-            )}
+        <div class="card-title">{title}</div>
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        ">
+            <div class="card-value">
+                {value:.2f}{suffix}
+            </div>
+
+            <div style="
+                color:{color};
+                font-size:13px;
+                font-weight:600;
+            ">
+                {delta}
+            </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """
+
+with c1:
+    st.markdown(
+        render_metric_card(
+            "Precision",
+            latest["precision"],
+            previous["precision"]
+        ),
+        unsafe_allow_html=True
+    )
 
 with c2:
-    st.markdown(f"""
-    <div class="card">
-        <div class="card-title">Recall</div>
-        <div class="card-value">{latest['recall']:.2f}%</div>
-        <div style="font-size:12px;margin-top:4px">
-            {metric_delta(
-                latest['recall'],
-                previous['recall']
-            )}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        render_metric_card(
+            "Recall",
+            latest["recall"],
+            previous["recall"]
+        ),
+        unsafe_allow_html=True
+    )
 
 with c3:
-    st.markdown(f"""
-    <div class="card">
-        <div class="card-title">F1-Score</div>
-        <div class="card-value">{latest['f1_score']:.2f}%</div>
-        <div style="font-size:12px;margin-top:4px">
-            {metric_delta(
-                latest['f1_score'],
-                previous['f1_score']
-            )}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(
+        render_metric_card(
+            "F1-Score",
+            latest["f1_score"],
+            previous["f1_score"]
+        ),
+        unsafe_allow_html=True
+    )
 
 with c4:
-    st.markdown(f"""
-    <div class="card">
-        <div class="card-title">Total Data</div>
-        <div class="card-value">{latest['total_data']:,}</div>
-        <div style="font-size:12px;margin-top:4px">
-            {total_data_delta(
-                latest['total_data'],
-                previous['total_data']
-            )}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
+    st.markdown(
+        render_metric_card(
+            "Total Data",
+            latest["total_data"],
+            previous["total_data"],
+            suffix=""
+        ),
+        unsafe_allow_html=True
+    )
 
 # =========================
 # =========================================================
