@@ -141,36 +141,11 @@ if df.empty:
 
 latest = df.iloc[-1]
 
-if len(df) > 1:
-    previous = df.iloc[-2]
-else:
-    previous = latest
-
 last_update = latest["created_at"].strftime(
     "%d-%m-%Y %H:%M:%S"
 )
 
 total_snapshot = len(df)
-
-def metric_delta(current, previous):
-    diff = current - previous
-
-    if diff > 0:
-        return f"▲ +{diff:.2f}%"
-    elif diff < 0:
-        return f"▼ {abs(diff):.2f}%"
-    else:
-        return "▬ 0.00%"
-    
-def total_data_delta(current, previous):
-    diff = int(current - previous)
-
-    if diff > 0:
-        return f"▲ +{diff:,}"
-    elif diff < 0:
-        return f"▼ {abs(diff):,}"
-    else:
-        return "▬ 0"
 
 
 # =========================
@@ -205,103 +180,38 @@ st.markdown("### 📌 Summary")
 
 c1, c2, c3, c4 = st.columns(4)
 
-def render_metric_card(
-    title,
-    value,
-    previous,
-    suffix="%",
-    is_integer=False
-):
-    diff = value - previous
-
-    if diff > 0:
-        color = "#2ecc71"
-        icon = "▲"
-        delta = (
-            f"{icon} +{diff:,.0f}"
-            if is_integer
-            else f"{icon} +{diff:.2f}{suffix}"
-        )
-
-    elif diff < 0:
-        color = "#e74c3c"
-        icon = "▼"
-        delta = (
-            f"{icon} {abs(diff):,.0f}"
-            if is_integer
-            else f"{icon} {abs(diff):.2f}{suffix}"
-        )
-
-    else:
-        color = "#95a5a6"
-        icon = "—"
-        delta = (
-            f"{icon} 0"
-            if is_integer
-            else f"{icon} 0.00{suffix}"
-        )
-
-    value_text = (
-        f"{value:,.0f}"
-        if is_integer
-        else f"{value:.2f}{suffix}"
-    )
-
-    html = f"""
-<div class="card">
-    <div class="card-title">{title}</div>
-
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div class="card-value">{value_text}</div>
-
-        <div style="color:{color};font-size:13px;font-weight:600;">
-            {delta}
-        </div>
-    </div>
-</div>
-"""
-    return html
-
 with c1:
-    st.markdown(
-        render_metric_card(
-            "Precision",
-            latest["precision"],
-            previous["precision"]
-        ),
-        unsafe_allow_html=True
-    )
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Precision</div>
+        <div class="card-value">{latest['precision']:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with c2:
-    st.markdown(
-        render_metric_card(
-            "Recall",
-            latest["recall"],
-            previous["recall"]
-        ),
-        unsafe_allow_html=True
-    )
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Recall</div>
+        <div class="card-value">{latest['recall']:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with c3:
-    st.markdown(
-        render_metric_card(
-            "F1-Score",
-            latest["f1_score"],
-            previous["f1_score"]
-        ),
-        unsafe_allow_html=True
-    )
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">F1-Score</div>
+        <div class="card-value">{latest['f1_score']:.2f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with c4:
-    st.markdown(
-        render_metric_card(
-            "Total Data",
-            latest["total_data"],
-            previous["total_data"],
-            is_integer=True
-        ),
-        unsafe_allow_html=True
-    )
+    st.markdown(f"""
+    <div class="card">
+        <div class="card-title">Total Data</div>
+        <div class="card-value">{latest['total_data']:,}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
 
 # =========================
 # =========================================================
