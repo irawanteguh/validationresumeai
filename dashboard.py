@@ -311,6 +311,10 @@ with col3:
             y="f1_score",
             text="f1_score",
             color="f1_score",
+            labels={
+                "f1_score": "value",
+                "field": "Field"
+            },
             template="plotly_dark",
             color_continuous_scale=[
                 [0.0, "#e74c3c"],
@@ -354,18 +358,16 @@ if doctor_perf:
     doc_df = pd.DataFrame(doctor_perf[-1].get("data", []))
 
     doc_df = doc_df.rename(columns={
-        "dokter": "doctor",
+        "dokter"     : "doctor",
         "doctor_name": "doctor",
         "nama_dokter": "doctor",
-        "name": "doctor",
-        "f1": "F1-Score"
+        "name"       : "doctor",
+        "f1"         : "F1-Score"
     })
 
     doc_df = doc_df.dropna(subset=["doctor", "F1-Score"])
     doc_df = doc_df[doc_df["doctor"].astype(str).str.strip() != ""]
-
     doc_df = doc_df.groupby("doctor", as_index=False)["F1-Score"].mean()
-
     doc_df = doc_df.sort_values("F1-Score", ascending=True)
 
     fig4 = px.bar(
