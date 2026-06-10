@@ -1,0 +1,13 @@
+# Config
+config.py
+
+# Monitoring state
+monitoring_state.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+.env
