@@ -52,7 +52,7 @@ MONITORING_STATE_FILE = "monitoring_state.json"
 # CONFIG
 # ====================================
 MONITORING_RETENTION_HOURS = 24
-RUN_INTERVAL_SECONDS = 3600
+RUN_INTERVAL_SECONDS = 600
 
 # ====================================
 # TIME
