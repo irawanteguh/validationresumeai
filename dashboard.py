@@ -84,7 +84,7 @@ div[data-testid="column"] {
 # AUTO REFRESH
 # =========================
 st_autorefresh(
-    interval=3600000,  # 1 jam
+    interval=5000,  # 1 jam
     key="monitoring_refresh"
 )
 
@@ -171,6 +171,61 @@ st.caption(
     f"Snapshots: {total_snapshot}"
 )
 
+# =========================
+# 🏆 BEST OVERALL PERFORMANCE
+# =========================
+st.markdown("### 🏆 Best Overall Performance")
+
+overall_best = history.get("overall_best", [])
+
+if overall_best:
+
+    best = overall_best[-1]
+
+    b1, b2, b3, b4 = st.columns(4)
+
+    with b1:
+        st.markdown(f"""
+        <div class="card">
+            <div class="card-title">🏆 Best Precision</div>
+            <div class="card-value">{best.get('precision', 0):.2f}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with b2:
+        st.markdown(f"""
+        <div class="card">
+            <div class="card-title">🏆 Best Recall</div>
+            <div class="card-value">{best.get('recall', 0):.2f}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with b3:
+        st.markdown(f"""
+        <div class="card">
+            <div class="card-title">🏆 Best F1-Score</div>
+            <div class="card-value">{best.get('f1_score', 0):.2f}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with b4:
+        st.markdown(f"""
+        <div class="card">
+            <div class="card-title">📊 Total Data</div>
+            <div class="card-value">{best.get('total_data', 0):,}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    best_created_at = pd.to_datetime(
+        best.get("created_at"),
+        errors="coerce"
+    )
+
+    if pd.notna(best_created_at):
+        st.caption(
+            f"Performance recorded: "
+            f"{best_created_at.strftime('%d-%m-%Y %H:%M:%S')}"
+        )
 
 # =========================
 # =========================================================
@@ -211,7 +266,6 @@ with c4:
         <div class="card-value">{latest['total_data']:,}</div>
     </div>
     """, unsafe_allow_html=True)
-
 
 # =========================
 # =========================================================

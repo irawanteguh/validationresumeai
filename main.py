@@ -148,6 +148,36 @@ def save_monitoring_state(section, payload):
 
     save_json(state, MONITORING_STATE_FILE)
 
+def save_best_overall(payload):
+    state = load_monitoring_state()
+
+    history = state.get("overall_best", [])
+
+    # Jika belum ada history, langsung simpan
+    if not history:
+        state["overall_best"] = [payload]
+        save_json(state, MONITORING_STATE_FILE)
+        return True
+
+    current_best = history[0]
+
+    old_f1 = float(current_best.get("f1_score", 0))
+    new_f1 = float(payload.get("f1_score", 0))
+
+    # Hanya update jika F1 lebih tinggi
+    if new_f1 > old_f1:
+        state["overall_best"] = [payload]
+
+        save_json(
+            state,
+            MONITORING_STATE_FILE
+        )
+
+        return True
+
+    # Jika sama atau lebih rendah, abaikan
+    return False
+
 # ====================================
 # LOG
 # ====================================
@@ -480,6 +510,19 @@ def print_summary(result, total_data):
 
     save_monitoring_state(
         "overall",
+        {
+            "created_at": now(),
+            "precision": p,
+            "recall": r,
+            "f1_score": f,
+            "total_data": total_data,
+            "TP": tp,
+            "FP": fp,
+            "FN": fn
+        }
+    )
+
+    save_best_overall(
         {
             "created_at": now(),
             "precision": p,
@@ -1063,27 +1106,27 @@ def main():
     # ====================================
     # DETAIL MATCH (PALING ATAS)
     # ====================================
-    # print("\n" + "=" * 120)
+    print("\n" + "=" * 120)
 
-    # log("DETAIL MATCH", CYAN)
+    log("DETAIL MATCH", CYAN)
 
-    # print("=" * 120)
+    print("=" * 120)
 
-    # for field in FIELDS:
+    for field in FIELDS:
 
-    #     if field not in result:
-    #         continue
+        if field not in result:
+            continue
 
-    #     r = result[field]
+        r = result[field]
 
-    #     # tampilkan hanya yg tidak perfect
-    #     if (
-    #         r["precision"] < 1
-    #         or r["recall"] < 1
-    #         or r["f1"] < 1
-    #     ):
+        # tampilkan hanya yg tidak perfect
+        if (
+            r["precision"] < 1
+            or r["recall"] < 1
+            or r["f1"] < 1
+        ):
 
-    #         print_match_detail(field, r)
+            print_match_detail(field, r)
 
     # ====================================
     # SUMMARY

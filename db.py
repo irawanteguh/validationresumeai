@@ -71,15 +71,6 @@ def fetch_data():
             SELECT *
             FROM web_co_resume_ranap_ai
             WHERE show_item ='1'
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI PENYAKIT DALAM')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI PARU')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI ANAK')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI JANTUNG')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI SARAF')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI KEBIDANAN')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI ORTHOPEDI')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI BEDAH UMUM')
-            OR (show_item = 'Y' AND kontrol = 'Kontrol ulang ke POLI UROLOGI')
         ) ai
 
         JOIN (
@@ -120,7 +111,7 @@ def fetch_data():
         -- AND ai.created_date <= TO_DATE('26-05-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
         -- AND ai.created_date >= TO_DATE('01-06-2026 23:59:59','DD-MM-YYYY HH24:MI:SS')
         -- AND ai.episode_id='126053148151'
-        -- AND d.dokter_id='DR. A0000000010'
+        -- AND d.dokter_id='DR. N0000000007'
     """
 
     cursor.execute(query)
